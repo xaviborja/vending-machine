@@ -14,7 +14,16 @@ class VendingMachineTest extends TestCase
         $vendingMachine = new VendingMachine();
         $vendingMachine->add('Juice', 1, 1, 1);
 
-        $vendingMachine->insertCoin(1);
+        $vendingMachine->insertCoin('1');
         self::assertEquals('Juice', $vendingMachine->select(1));
+    }
+
+    public function testShouldReturnCoins(): void
+    {
+        $vendingMachine = new VendingMachine();
+
+        $vendingMachine->insertCoin('1');
+        $vendingMachine->insertCoin('0.10');
+        self::assertEquals(['1', '0.10'], $vendingMachine->returnCoins());
     }
 }
