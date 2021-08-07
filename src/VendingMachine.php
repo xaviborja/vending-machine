@@ -19,9 +19,12 @@ final class VendingMachine
         isset($this->coinsInserted[$coin]) ? $this->coinsInserted[$coin]++ : $this->coinsInserted[$coin] = 1;
     }
 
-    public function select(int $selector): string
+    public function select(int $selector): ItemSold
     {
-        return $this->items[$selector]->name();
+        return new ItemSold(
+            $this->items[$selector]->name(),
+            '1'
+        );
     }
 
     public function returnCoins(): array
