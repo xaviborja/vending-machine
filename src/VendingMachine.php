@@ -21,6 +21,7 @@ final class VendingMachine
 
     public function select(int $selector): ItemSold
     {
+        $this->checkEnoughMoneyForSelection($selector);
         return new ItemSold(
             $this->items[$selector]->name(),
             '1'
@@ -37,5 +38,22 @@ final class VendingMachine
         }
 
         return $coinsToReturn;
+    }
+
+    private function checkEnoughMoneyForSelection(int $selector): void
+    {
+        if ($this->items[$selector]->price() > $this->amountInserted()) {
+            throw new NotEnoughMoneyForItemException();
+        }
+    }
+
+    private function amountInserted(): float
+    {
+        $total = 0;
+        foreach ($this->coinsInserted as $coin => $quantity) {
+            $total+= (float)$coin * $quantity;
+        }
+
+        return $total;
     }
 }

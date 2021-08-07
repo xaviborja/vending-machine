@@ -28,4 +28,9 @@ final class Item
     {
         return $this->name;
     }
+
+    public function price(): float
+    {
+        return $this->price;
+    }
 }

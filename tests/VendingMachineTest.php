@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
+use App\NotEnoughMoneyForItemException;
 use App\VendingMachine;
 use PHPUnit\Framework\TestCase;
 
@@ -38,5 +39,15 @@ class VendingMachineTest extends TestCase
         $itemSold = $vendingMachine->select(1);
         self::assertEquals('Juice', $itemSold->name());
         self::assertEquals('1', $itemSold->change());
+    }
+
+    public function testShouldNotBuyWithoutEnoughMoney(): void
+    {
+        $vendingMachine = new VendingMachine();
+        $vendingMachine->add('Juice', 1, 1, 1);
+
+        $vendingMachine->insertCoin('0.5');
+        $this->expectException(NotEnoughMoneyForItemException::class);
+        $vendingMachine->select(1);
     }
 }
