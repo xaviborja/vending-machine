@@ -64,12 +64,15 @@ final class Wallet
         $coins = $this->coins();
         krsort($coins);
         $wallet = new self();
-
+        $amount = round($amount, 2);
         foreach ($coins as $coin => $quantity) {
+            $coinRounded = round((float)$coin, 2);
+
             for ($i = 1; $i<=$quantity; $i++) {
-                if ((float)$coin <= $amount) {
-                    $wallet->add(new Coin((float)$coin));
-                    $amount -= round((float)$coin, 2);
+                $pendingAmountBiggerOrEqualToCoin = $coinRounded < $amount || abs($coinRounded - $amount) < 0.0001;
+                if ($pendingAmountBiggerOrEqualToCoin) {
+                    $wallet->add(new Coin($coinRounded));
+                    $amount -= $coinRounded;
                 } elseif ($wallet->totalAmount() < $amount) {
                     break;
                 } else {
@@ -78,6 +81,7 @@ final class Wallet
             }
         }
 
+        var_dump($amount);
         if(round($amount, 2) > 0) {
             throw new NotEnoughChangeException();
         }

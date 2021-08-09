@@ -37,6 +37,7 @@ class VendingMachineTest extends TestCase
     {
         $vendingMachine = new VendingMachine();
         $vendingMachine->add('Juice', 1, 1, 1);
+        $vendingMachine->add('Soda', 1.50, 10, 2);
 
         $vendingMachine->insertCoin(new Coin(1));
         $vendingMachine->insertCoin(new Coin(0.10));
@@ -44,6 +45,14 @@ class VendingMachineTest extends TestCase
         $itemSold = $vendingMachine->select(1);
         self::assertEquals('Juice', $itemSold->name());
         self::assertEquals(0.15, $itemSold->change()->totalAmount());
+
+        $vendingMachine->insertCoin(new Coin(1));
+        $vendingMachine->insertCoin(new Coin(0.10));
+        $vendingMachine->insertCoin(new Coin(0.10));
+        $vendingMachine->insertCoin(new Coin(0.25));
+        $vendingMachine->insertCoin(new Coin(0.25));
+        $itemSold = $vendingMachine->select(2);
+        self::assertEquals([0.10, 0.10], $itemSold->change()->toArray());
     }
 
     public function testShouldNotBuyWithoutEnoughMoney(): void
