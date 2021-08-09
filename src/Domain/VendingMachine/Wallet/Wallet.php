@@ -81,7 +81,6 @@ final class Wallet
             }
         }
 
-        var_dump($amount);
         if(round($amount, 2) > 0) {
             throw new NotEnoughChangeException();
         }
