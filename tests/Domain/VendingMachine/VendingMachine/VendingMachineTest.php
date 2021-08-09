@@ -82,6 +82,17 @@ class VendingMachineTest extends TestCase
         $vendingMachine->insertCoin(new Coin(1));
         $this->expectException(NotEnoughChangeException::class);
         $vendingMachine->select(1);
+    }
 
+    public function testShouldClearClientWalletAfterBuy(): void
+    {
+        $vendingMachine = new VendingMachine();
+        $vendingMachine->add('Juice', 1, 1, 1);
+
+        $vendingMachine->insertCoin(new Coin(1));
+        $vendingMachine->select(1);
+        self::assertEquals([], $vendingMachine->returnCoins());
+        $this->expectException(NotEnoughMoneyForItemException::class);
+        $vendingMachine->select(1);
     }
 }

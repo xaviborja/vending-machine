@@ -35,10 +35,12 @@ final class VendingMachine
         $this->vendingMachineWallet = $this->vendingMachineWallet->addWallet($this->clientWallet);
         /** @var Item $itemSelected */
         $itemSelected = $this->items[$selector];
+        $changeWallet = $this->calculateChange($itemSelected);
+        $this->clientWallet = new Wallet();
 
         return new ItemSold(
             $this->items[$selector]->name(),
-            $this->calculateChange($itemSelected)
+            $changeWallet
         );
     }
 
