@@ -46,7 +46,9 @@ final class VendingMachine
 
     public function returnCoins(): array
     {
-        return $this->clientWallet->toArray();
+        $coinsToReturn = $this->clientWallet->toArray();
+        $this->clientWallet = new Wallet();
+        return $coinsToReturn;
     }
 
     private function checkEnoughMoneyForSelection(int $selector): void
