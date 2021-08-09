@@ -84,6 +84,7 @@ final class VendingMachine
         /** @var Item $item */
         $item = $this->items[$selector];
         $item->updateQuantity($quantity);
+        $this->items[$selector] = $item;
     }
 
     private function checkItemAvailable(int $selector): void
