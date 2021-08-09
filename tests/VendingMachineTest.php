@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests;
 
 use App\Coin;
+use App\InvalidCoinException;
 use App\NotEnoughMoneyForItemException;
 use App\VendingMachine;
 use PHPUnit\Framework\TestCase;
@@ -53,4 +54,13 @@ class VendingMachineTest extends TestCase
         $this->expectException(NotEnoughMoneyForItemException::class);
         $vendingMachine->select(1);
     }
+
+    public function testShouldNotAcceptInvalidCoin(): void
+    {
+        $vendingMachine = new VendingMachine();
+
+        $this->expectException(InvalidCoinException::class);
+        $vendingMachine->insertCoin(new Coin(0.20));
+    }
+
 }
