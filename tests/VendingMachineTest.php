@@ -63,4 +63,15 @@ class VendingMachineTest extends TestCase
         $vendingMachine->insertCoin(new Coin(0.20));
     }
 
+    public function testTotalAmountAfterBuyAnItem(): void
+    {
+        $vendingMachine = new VendingMachine();
+        $vendingMachine->add('Juice', 1, 1, 1);
+
+        $vendingMachine->insertCoin(new Coin(1));
+        $vendingMachine->select(1);
+
+        self::assertEquals(1, $vendingMachine->totalAmount());
+    }
+
 }

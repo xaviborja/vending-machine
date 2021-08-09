@@ -29,6 +29,7 @@ final class VendingMachine
     public function select(int $selector): ItemSold
     {
         $this->checkEnoughMoneyForSelection($selector);
+        $this->vendingMachineWallet = $this->vendingMachineWallet->addWallet($this->clientWallet);
         /** @var Item $itemSelected */
         $itemSelected = $this->items[$selector];
 
@@ -56,8 +57,12 @@ final class VendingMachine
             return new Wallet();
         }
 
-        $this->vendingMachineWallet = $this->vendingMachineWallet->addWallet($this->clientWallet);
         $changeAmount = $this->clientWallet->totalAmount() - $itemSelected->price();
         return $this->vendingMachineWallet->obtainWalletFromAmount($changeAmount);
+    }
+
+    public function totalAmount(): float
+    {
+        return $this->vendingMachineWallet->totalAmount();
     }
 }
