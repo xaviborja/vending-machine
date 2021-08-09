@@ -114,4 +114,17 @@ class VendingMachineTest extends TestCase
         self::assertEquals([1, 0.10], $vendingMachine->returnCoins());
         self::assertEquals([], $vendingMachine->returnCoins());
     }
+    
+    public function testShouldAddChange(): void
+    {
+        $vendingMachine = new VendingMachine();
+        $vendingMachine->add('Water', 0.65, 1, 1);
+        $vendingMachine->insertCoin(new Coin(1));
+        $vendingMachine->addCoinForChange(new Coin(0.10), 3);
+        $vendingMachine->addCoinForChange(new Coin(0.05), 1);
+        $itemSold = $vendingMachine->select(1);
+        self::assertEquals('Water', $itemSold->name());
+        self::assertEquals(['0.1', '0.1', '0.1', '0.05'], $itemSold->change()->toArray());
+    }
+    
 }

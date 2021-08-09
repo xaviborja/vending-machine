@@ -72,4 +72,9 @@ final class VendingMachine
     {
         return $this->vendingMachineWallet->totalAmount();
     }
+
+    public function addCoinForChange(Coin $coin, int $quantity): void
+    {
+        $this->vendingMachineWallet->add($coin, $quantity);
+    }
 }
