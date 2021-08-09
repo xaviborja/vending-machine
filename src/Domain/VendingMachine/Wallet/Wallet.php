@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Domain\VendingMachine\Wallet;
+
+use App\Domain\VendingMachine\Coin\Coin;
 
 final class Wallet
 {
@@ -57,7 +59,7 @@ final class Wallet
         return $this->coins;
     }
 
-    public function obtainWalletFromAmount(float $amount): self
+    public function obtainWalletForChange(float $amount): self
     {
         $coins = $this->coins();
         krsort($coins);
@@ -67,13 +69,17 @@ final class Wallet
             for ($i = 1; $i<=$quantity; $i++) {
                 if ((float)$coin <= $amount) {
                     $wallet->add(new Coin((float)$coin));
-                    $amount -= (float)$coin;
+                    $amount -= round((float)$coin, 2);
                 } elseif ($wallet->totalAmount() < $amount) {
                     break;
                 } else {
                     break 2;
                 }
             }
+        }
+
+        if(round($amount, 2) > 0) {
+            throw new NotEnoughChangeException();
         }
 
         return $wallet;

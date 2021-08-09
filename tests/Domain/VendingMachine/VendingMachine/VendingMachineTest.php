@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Tests;
+namespace App\Tests\Domain\VendingMachine\VendingMachine;
 
-use App\Coin;
-use App\InvalidCoinException;
-use App\NotEnoughMoneyForItemException;
-use App\VendingMachine;
+use App\Domain\VendingMachine\Coin\Coin;
+use App\Domain\VendingMachine\Coin\InvalidCoinException;
+use App\Domain\VendingMachine\VendingMachine\NotEnoughMoneyForItemException;
+use App\Domain\VendingMachine\VendingMachine\VendingMachine;
+use App\Domain\VendingMachine\Wallet\NotEnoughChangeException;
 use PHPUnit\Framework\TestCase;
 
 class VendingMachineTest extends TestCase
@@ -74,4 +75,13 @@ class VendingMachineTest extends TestCase
         self::assertEquals(1, $vendingMachine->totalAmount());
     }
 
+    public function testShouldNotSellWhenDoesNotHaveEnoughChange(): void
+    {
+        $vendingMachine = new VendingMachine();
+        $vendingMachine->add('Water', 0.65, 1, 1);
+        $vendingMachine->insertCoin(new Coin(1));
+        $this->expectException(NotEnoughChangeException::class);
+        $vendingMachine->select(1);
+
+    }
 }

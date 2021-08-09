@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Domain\VendingMachine\VendingMachine;
 
 final class Item
 {
-
-
     private string $name;
     private float $price;
     private int $quantity;

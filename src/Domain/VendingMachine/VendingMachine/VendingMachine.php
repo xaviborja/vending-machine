@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Domain\VendingMachine\VendingMachine;
+
+use App\Domain\VendingMachine\Coin\Coin;
+use App\Domain\VendingMachine\Wallet\Wallet;
 
 final class VendingMachine
 {
@@ -58,7 +61,7 @@ final class VendingMachine
         }
 
         $changeAmount = $this->clientWallet->totalAmount() - $itemSelected->price();
-        return $this->vendingMachineWallet->obtainWalletFromAmount($changeAmount);
+        return $this->vendingMachineWallet->obtainWalletForChange($changeAmount);
     }
 
     public function totalAmount(): float
