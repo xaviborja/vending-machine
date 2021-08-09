@@ -31,4 +31,14 @@ final class Item
     {
         return $this->price;
     }
+
+    public function updateQuantity(int $quantity): void
+    {
+        $this->quantity = $quantity;
+    }
+
+    public function quantity(): int
+    {
+        return $this->quantity;
+    }
 }

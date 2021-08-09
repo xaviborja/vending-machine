@@ -31,6 +31,7 @@ final class VendingMachine
 
     public function select(int $selector): ItemSold
     {
+        $this->checkItemAvailable($selector);
         $this->checkEnoughMoneyForSelection($selector);
         $this->vendingMachineWallet = $this->vendingMachineWallet->addWallet($this->clientWallet);
         /** @var Item $itemSelected */
@@ -76,5 +77,21 @@ final class VendingMachine
     public function addCoinForChange(Coin $coin, int $quantity): void
     {
         $this->vendingMachineWallet->add($coin, $quantity);
+    }
+
+    public function updateItemQuantityBySelector(int $selector, int $quantity): void
+    {
+        /** @var Item $item */
+        $item = $this->items[$selector];
+        $item->updateQuantity($quantity);
+    }
+
+    private function checkItemAvailable(int $selector): void
+    {
+        /** @var Item $item */
+        $item = $this->items[$selector];
+        if ($item->quantity() === 0) {
+           throw new ItemNotAvailableException();
+        }
     }
 }

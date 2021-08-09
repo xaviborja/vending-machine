@@ -6,6 +6,7 @@ namespace App\Tests\Domain\VendingMachine\VendingMachine;
 
 use App\Domain\VendingMachine\Coin\Coin;
 use App\Domain\VendingMachine\Coin\InvalidCoinException;
+use App\Domain\VendingMachine\VendingMachine\ItemNotAvailableException;
 use App\Domain\VendingMachine\VendingMachine\NotEnoughMoneyForItemException;
 use App\Domain\VendingMachine\VendingMachine\VendingMachine;
 use App\Domain\VendingMachine\Wallet\NotEnoughChangeException;
@@ -126,5 +127,14 @@ class VendingMachineTest extends TestCase
         self::assertEquals('Water', $itemSold->name());
         self::assertEquals(['0.1', '0.1', '0.1', '0.05'], $itemSold->change()->toArray());
     }
-    
+
+    public function testShouldUpdateItemsQuantity(): void
+    {
+        $vendingMachine = new VendingMachine();
+        $vendingMachine->add('Juice', 1, 1, 1);
+        $vendingMachine->updateItemQuantityBySelector(1, 0);
+        $vendingMachine->insertCoin(new Coin(1));
+        $this->expectException(ItemNotAvailableException::class);
+        $vendingMachine->select(1);
+    }
 }
