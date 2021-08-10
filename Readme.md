@@ -3,8 +3,10 @@
 To run this application you need to do these steps:
 
 1 - Clone the repository
+
 2 - Build docker image
 `docker build -t vending-machine .`
+
 3 - Run the container
 `docker run -it --rm --name vending-machine-run vending-machine`
 
